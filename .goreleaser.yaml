@@ -1,0 +1,70 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - main: ./cmd/semver
+    id: semver
+    binary: semver
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    ldflags:
+      - "-X github.com/coreeng/semver-utils/internal/build.BuildVersion={{.Version}}"
+      - "-X github.com/coreeng/semver-utils/internal/build.BuildCommit={{.Commit}}"
+      - "-X github.com/coreeng/semver-utils/internal/build.BuildDate={{.Date}}"
+
+  - main: ./cmd/semver-git
+    id: semver-git
+    binary: semver-git
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    ldflags:
+      - "-X github.com/coreeng/semver-utils/internal/build.BuildVersion={{.Version}}"
+      - "-X github.com/coreeng/semver-utils/internal/build.BuildCommit={{.Commit}}"
+      - "-X github.com/coreeng/semver-utils/internal/build.BuildDate={{.Date}}"
+
+archives:
+  - formats: ['tar.gz']
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: ['zip']
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+brews:
+  - name: semver-utils
+    homepage: https://github.com/coreeng/semver-utils
+    description: CLIs for interactive with semantic versions and semver tags on git repos
+
+    repository:
+      owner: coreeng
+      name: homebrew-tap
+
+    dependencies:
+      - name: go
+
+    custom_require: lib/github_downloads
+    download_strategy: GitHubPrivateRepositoryReleaseDownloadStrategy
