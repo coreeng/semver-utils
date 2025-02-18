@@ -9,6 +9,18 @@ This repository provides Go libraries and CLIs for working with semantic version
 
 Both CLIs require Go to be installed. Then install each CLI using:
 
+### Via `brew` (recommended)
+
+```bash
+brew tap coreeng/tap
+brew install coreeng/tap/semver-utils
+```
+
+> [!NOTE]
+> This will require you to have `HOMEBREW_GITHUB_API_TOKEN` set in your environment to a PAT that can access private coreeng repos
+
+### Via `go install`
+
 ```bash
 export GOPRIVATE=github.com/coreeng/semver-utils
 go install github.com/coreeng/semver-utils/cmd/semver@latest
