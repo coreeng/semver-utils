@@ -6,6 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"io"
+
 	"github.com/coreeng/semver-utils/pkg/semver"
 	"github.com/go-git/go-billy/v5/memfs"
 	"github.com/go-git/go-git/v5"
@@ -14,10 +16,9 @@ import (
 	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"io"
 )
 
-// commitSpec defines a commit’s content, timestamp, associated tags, and branches.
+// commitSpec defines a commit's content, timestamp, associated tags, and branches.
 type commitSpec struct {
 	Message   string
 	Timestamp int64
@@ -251,6 +252,7 @@ func TestFetchVersionTagExact(t *testing.T) {
 		commitsIter, err := repo.Log(&git.LogOptions{})
 		assert.NoError(t, err)
 		_, err = commitsIter.Next() // Skip HEAD
+		assert.NoError(t, err)
 		secondCommit, err := commitsIter.Next()
 		assert.NoError(t, err)
 

@@ -12,17 +12,13 @@ Both CLIs require Go to be installed. Then install each CLI using:
 ### Via `brew` (recommended)
 
 ```bash
-brew tap coreeng/tap
+brew tap coreeng/public
 brew install coreeng/tap/semver-utils
 ```
-
-> [!NOTE]
-> This will require you to have `HOMEBREW_GITHUB_API_TOKEN` set in your environment to a PAT that can access private coreeng repos
 
 ### Via `go install`
 
 ```bash
-export GOPRIVATE=github.com/coreeng/semver-utils
 go install github.com/coreeng/semver-utils/cmd/semver@latest
 go install github.com/coreeng/semver-utils/cmd/semver-git@latest
 ```
@@ -31,9 +27,12 @@ Once installed, the `semver` and `semver-git` binaries will be available in your
 
 # Prefixed vs. non-prefixed version tags
 
-Sometimes you want to manage a single authoritative semantic version for an entire repository, sometimes you want to manage multiple semantic version tags for multiple elements within a repository.
+Sometimes you want to manage a single authoritative semantic version for an entire repository, sometimes you want to manage multiple semantic version tags within a repository.
 
-All commands on `semver-git` accept the optional `--prefix` parameter. If this parameter is provided, the CLI will search for and create Git tags in the format `<prefix>/v<semver>`. If the `--prefix` parameter is omitted, the Git tags searched and created will be in the format `v<semver>`
+All commands on `semver-git` accept the optional `--prefix` parameter:
+
+- If this parameter is provided, the CLI will search for and create Git tags in the format `<prefix>/v<semver>`
+- If the `--prefix` parameter is omitted, the Git tags searched and created will be in the format `v<semver>`
 
 The `--prefix` string itself can contain any characters that form a valid Git tag.
 

@@ -6,7 +6,7 @@ set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 echo "==> Building project with GoReleaser (snapshot mode)..."
-goreleaser build --snapshot --clean
+make build
 
 # -----------------------------------------------------------------------------
 # Detect current platform/architecture
