@@ -13,7 +13,7 @@ Both CLIs require Go to be installed. Then install each CLI using:
 
 ```bash
 brew tap coreeng/public
-brew install coreeng/tap/semver-utils
+brew install coreeng/public/semver-utils
 ```
 
 ### Via `go install`
