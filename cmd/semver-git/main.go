@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/coreeng/semver-utils/internal/build"
 	"os"
 	"strings"
+
+	"github.com/coreeng/semver-utils/internal/build"
 
 	igit "github.com/coreeng/semver-utils/pkg/git"
 	"github.com/coreeng/semver-utils/pkg/semver"
@@ -16,7 +17,9 @@ import (
 
 // outputErrorAndExit prints an error message as JSON and exits the program.
 func outputErrorAndExit(errMsg string) {
-	json.NewEncoder(os.Stdout).Encode(map[string]string{"error": errMsg})
+	if err := json.NewEncoder(os.Stdout).Encode(map[string]string{"error": errMsg}); err != nil {
+		fmt.Fprintf(os.Stderr, "Error encoding JSON: %v\n", err)
+	}
 	os.Exit(1)
 }
 
@@ -58,7 +61,9 @@ var fetchTagCmd = &cobra.Command{
 			"version": version.String(),
 			"commit":  tagCommit.Hash.String(),
 		}
-		json.NewEncoder(os.Stdout).Encode(result)
+		if err := json.NewEncoder(os.Stdout).Encode(result); err != nil {
+			outputErrorAndExit(fmt.Sprintf("Error encoding JSON: %v", err))
+		}
 	},
 }
 
@@ -93,6 +98,12 @@ var createTagCmd = &cobra.Command{
 
 		// Try to fetch a previous version tag
 		prevTag, currentVersion, _, err := igit.FetchVersionTag(repository, commit, prefix, false)
+		if err != nil {
+			// We ignore the error here as it's not critical for version bumping
+			prevTag = ""
+			currentVersion = semver.SemVer{}
+		}
+
 		var newVersion semver.SemVer
 		if prevTag != "" {
 			switch strings.ToLower(incrementType) {
@@ -161,7 +172,9 @@ var createTagCmd = &cobra.Command{
 			response["upstream"] = upstream
 		}
 
-		json.NewEncoder(os.Stdout).Encode(response)
+		if err := json.NewEncoder(os.Stdout).Encode(response); err != nil {
+			outputErrorAndExit(fmt.Sprintf("Error encoding JSON: %v", err))
+		}
 	},
 }
 

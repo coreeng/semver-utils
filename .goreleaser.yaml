@@ -61,10 +61,8 @@ brews:
 
     repository:
       owner: coreeng
-      name: homebrew-tap
+      name: homebrew-public
 
     dependencies:
       - name: go
-
-    custom_require: lib/github_downloads
-    download_strategy: GitHubPrivateRepositoryReleaseDownloadStrategy
+        type: optional
