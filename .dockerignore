@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+.github
+
+# Build artifacts
+dist/
+*.snap
+
+# Documentation
+*.md
+LICENSE
+docs/
+
+# Tests
+tests/
+*_test.go
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+.goreleaser.yaml
+Makefile

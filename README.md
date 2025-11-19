@@ -7,9 +7,29 @@ This repository provides Go libraries and CLIs for working with semantic version
 
 ## Installation
 
-Both CLIs require Go to be installed. Then install each CLI using:
+### Via Docker (recommended)
 
-### Via `brew` (recommended)
+Both CLIs are available in a single Docker image from GitHub Container Registry:
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/coreeng/semver-utils:latest
+
+# Run semver CLI
+docker run --rm ghcr.io/coreeng/semver-utils:latest semver --help
+docker run --rm ghcr.io/coreeng/semver-utils:latest semver increment minor 1.2.3
+
+# Run semver-git CLI
+docker run --rm ghcr.io/coreeng/semver-utils:latest semver-git --help
+
+# Run semver-git in a git repository (mount current directory)
+docker run --rm -v $(pwd):/workspace -w /workspace \
+  ghcr.io/coreeng/semver-utils:latest semver-git fetch-tag --repo .
+```
+
+The Docker image is available for `linux/amd64` and `linux/arm64` platforms.
+
+### Via `brew`
 
 ```bash
 brew tap coreeng/public
