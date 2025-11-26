@@ -26,7 +26,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
     ./cmd/semver-git
 
 # Final stage - using alpine for shell support (needed for entrypoint script)
-FROM alpine:latest
+FROM alpine:3.22
+
+# Install jq, git, and bash
+RUN apk add --no-cache jq git bash
 
 # Copy binaries from builder
 COPY --from=builder /build/semver /usr/local/bin/semver
